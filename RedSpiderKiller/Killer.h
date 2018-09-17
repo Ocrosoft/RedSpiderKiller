@@ -41,6 +41,7 @@ public:
 	void SetFilePath(const std::wstring& filePath);
 
 	bool IsHide();
+	bool IsInited();
 
 private:
 	// 获取红蜘蛛根目录及文件名

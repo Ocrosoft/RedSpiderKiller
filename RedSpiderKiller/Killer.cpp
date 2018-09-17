@@ -87,15 +87,13 @@ bool Killer::SetSpiderWindow(HWND window)
 	TCHAR szName[MAX_PATH] = { 0 };
 	if (window)
 	{
+		DWORD dwId = 0;
+		::GetWindowThreadProcessId(window, &dwId);
+		HANDLE handle = ::OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, 0, dwId);
+		if (handle)
 		{
-			DWORD dwId = 0;
-			::GetWindowThreadProcessId(window, &dwId);
-			HANDLE handle = ::OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, 0, dwId);
-			if (handle)
-			{
-				DWORD dwLen = MAX_PATH;
-				::QueryFullProcessImageName(handle, 0, szName, &dwLen);
-			}
+			DWORD dwLen = MAX_PATH;
+			::QueryFullProcessImageName(handle, 0, szName, &dwLen);
 		}
 	}
 
@@ -124,6 +122,11 @@ bool Killer::IsHide()
 	ENSURE_INITED false;
 
 	return m_hided;
+}
+
+bool Killer::IsInited()
+{
+	return m_inited;
 }
 
 bool Killer::GetPath()
